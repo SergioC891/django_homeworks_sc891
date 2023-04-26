@@ -16,15 +16,27 @@ DATA = {
         'сыр, ломтик': 1,
         'помидор, ломтик': 1,
     },
-    # можете добавить свои рецепты ;)
+    'colbasa': {
+        'фарш, кг': 5,
+        'специи, г': 10,
+        'консерванты, л': 0.25,
+    },
 }
 
-# Напишите ваш обработчик. Используйте DATA как источник данных
-# Результат - render(request, 'calculator/index.html', context)
-# В качестве контекста должен быть передан словарь с рецептом:
-# context = {
-#   'recipe': {
-#     'ингредиент1': количество1,
-#     'ингредиент2': количество2,
-#   }
-# }
+
+def recipe(request, recipe_name):
+    try:
+        servings = float(request.GET.get('servings'))
+    except Exception:
+        servings = 1
+
+    recipe_items = DATA[recipe_name].copy() if DATA.get(recipe_name) else None
+
+    if servings > 0 and recipe_items is not None:
+        for item, quantity in recipe_items.items():
+            recipe_items[item] = round(quantity * servings, 2)
+
+    context = {
+        'recipe': recipe_items
+    }
+    return render(request, 'calculator/index.html', context)
