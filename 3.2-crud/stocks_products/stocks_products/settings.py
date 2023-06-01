@@ -73,6 +73,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'stocks_products.wsgi.application'
 
+CSRF_TRUSTED_ORIGINS = ['moz-extension://b2d8e17e-eab3-4c46-bb38-5aefd7c6776c']
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+    ],
+    'DEFAULT_PAGINATION_CLASS':
+        'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 5,
+}
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -83,6 +93,8 @@ DATABASES = {
         'NAME': 'netology_stocks_products',
         'HOST': '127.0.0.1',
         'PORT': '5432',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
     }
 }
 
